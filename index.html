@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ilwad Elman</title>
+  <meta name="description" content="Ilwad Elman">
+  <link rel="preload" as="image" href="video/poster.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0E0B0A',
+            cream: '#F4ECE2',
+            ember: '#C8553D',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'serif'],
+            sans: ['Manrope', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --ease-spring: cubic-bezier(0.22, 1.2, 0.36, 1);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html, body { background: #0E0B0A; }
+    body { line-height: 1.7; }
+
+    .hero-title {
+      letter-spacing: -0.03em;
+      line-height: 0.92;
+      text-shadow: 0 2px 30px rgba(14, 11, 10, 0.35), 0 1px 2px rgba(14, 11, 10, 0.4);
+    }
+
+    /* Grain */
+    .grain {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.09;
+      mix-blend-mode: overlay;
+    }
+
+    /* Layered radial vignette */
+    .vignette {
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 50%, rgba(14, 11, 10, 0.15) 0%, rgba(14, 11, 10, 0.1) 45%, rgba(14, 11, 10, 0.55) 100%),
+        radial-gradient(ellipse 80% 40% at 50% 0%, rgba(14, 11, 10, 0.4) 0%, transparent 70%),
+        radial-gradient(ellipse 90% 50% at 50% 110%, rgba(200, 85, 61, 0.22) 0%, transparent 70%);
+    }
+
+    /* Entrance */
+    .rise { opacity: 0; transform: translateY(18px); animation: rise 1.4s var(--ease-out) forwards; }
+    .rise-1 { animation-delay: 0.15s; }
+    .rise-2 { animation-delay: 0.35s; }
+    .fade { opacity: 0; animation: fade 1.6s var(--ease-out) forwards; }
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fade { to { opacity: 1; } }
+
+    /* Nav link */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute; left: 0; right: 0; bottom: -4px; height: 1px;
+      background: #C8553D;
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.5s var(--ease-spring);
+    }
+    .nav-link:hover::after,
+    .nav-link:focus-visible::after,
+    .nav-link[aria-current="page"]::after { transform: scaleX(1); }
+    .nav-link { transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-spring); }
+    .nav-link:hover { opacity: 1; }
+    .nav-link:active { transform: scale(0.96); }
+    .nav-link:focus-visible { outline: 1px solid rgba(244, 236, 226, 0.6); outline-offset: 6px; border-radius: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rise, .fade { animation: none; opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body class="font-sans text-cream antialiased">
+
+  <header class="fixed inset-x-0 top-0 z-30 fade">
+    <nav class="mx-auto flex max-w-7xl items-center justify-center px-6 pt-[max(1.5rem,env(safe-area-inset-top))] md:justify-end md:px-10 md:pt-8" aria-label="Primary">
+      <a href="/" aria-current="page" class="nav-link text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-cream/90">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="relative isolate flex h-[100svh] min-h-[32rem] w-full items-center justify-center overflow-hidden">
+      <!-- Base: video -->
+      <video
+        class="absolute inset-0 -z-30 h-full w-full object-cover object-[50%_35%]"
+        src="video/hero.mp4"
+        poster="video/poster.jpg"
+        autoplay muted loop playsinline preload="auto"
+        aria-hidden="true"></video>
+
+      <!-- Treatment layers -->
+      <div class="absolute inset-0 -z-20 bg-[#3a1d14] mix-blend-multiply opacity-20" aria-hidden="true"></div>
+      <div class="absolute inset-0 -z-20 bg-gradient-to-t from-black/60 via-transparent to-black/20" aria-hidden="true"></div>
+      <div class="vignette absolute inset-0 -z-10" aria-hidden="true"></div>
+      <div class="grain pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
+
+      <!-- Title -->
+      <h1 class="hero-title px-6 text-center font-display font-medium text-cream">
+        <span class="rise rise-1 block text-[clamp(4rem,15vw,11rem)]">Ilwad</span>
+        <span class="rise rise-2 block text-[clamp(4rem,15vw,11rem)] italic">Elman</span>
+      </h1>
+    </section>
+  </main>
+
+</body>
+</html>
